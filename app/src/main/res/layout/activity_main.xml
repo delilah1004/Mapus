@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightBlue">
+
+    <include layout="@layout/fragment_map"></include>
+
+    <LinearLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/search_background">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:src="@drawable/logo_small" />
+
+        <EditText
+            android:id="@+id/search_bar_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:hint="소속 또는 이름을 입력하세요" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/first_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_bar"
+        android:layout_alignRight="@+id/search_bar"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/milkWhite"
+        android:text="도움말 확인" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_mylocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_call"
+        android:layout_alignEnd="@+id/btn_filter"
+        android:layout_marginBottom="@dimen/between_icon_margin"
+        android:backgroundTint="@color/milkWhite"
+        android:src="@drawable/btn_mylocation"
+        app:fabCustomSize="@dimen/fab_size"
+        app:maxImageSize="@dimen/fab_icon_size" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_filter"
+        android:layout_alignEnd="@+id/btn_filter"
+        android:layout_marginBottom="@dimen/between_icon_margin"
+        android:backgroundTint="@color/colorCall"
+        android:src="@drawable/btn_call_map"
+        app:fabCustomSize="@dimen/fab_size"
+        app:maxImageSize="@dimen/fab_icon_size" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/margin_from_parents"
+        android:layout_marginBottom="@dimen/margin_from_parents"
+        android:backgroundTint="@color/colorFilter"
+        android:src="@drawable/btn_filter"
+        app:fabCustomSize="@dimen/fab_size"
+        app:maxImageSize="@dimen/fab_icon_size" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_conv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_filter"
+        android:layout_marginRight="@dimen/between_icon_margin"
+        android:layout_toLeftOf="@+id/btn_filter"
+        android:backgroundTint="@color/milkWhite"
+        android:src="@drawable/btn_filter_conveniencestore"
+        android:visibility="invisible"
+        app:fabCustomSize="@dimen/fab_size"
+        app:maxImageSize="@dimen/fab_text_size_three" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_filter"
+        android:layout_marginRight="@dimen/between_icon_margin"
+        android:layout_toLeftOf="@+id/btn_conv"
+        android:backgroundTint="@color/milkWhite"
+        android:src="@drawable/btn_filter_restaurant"
+        android:visibility="invisible"
+        app:fabCustomSize="@dimen/fab_size"
+        app:maxImageSize="@dimen/fab_icon_size" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_cafe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_filter"
+        android:layout_marginRight="@dimen/between_icon_margin"
+        android:layout_toLeftOf="@+id/btn_rest"
+        android:backgroundTint="@color/milkWhite"
+        android:src="@drawable/btn_filter_cafe"
+        android:visibility="invisible"
+        app:fabCustomSize="@dimen/fab_size"
+        app:maxImageSize="@dimen/fab_icon_size" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_retire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_filter"
+        android:layout_marginRight="@dimen/between_icon_margin"
+        android:layout_toLeftOf="@+id/btn_cafe"
+        android:backgroundTint="@color/milkWhite"
+        android:src="@drawable/btn_filter_retiringroom"
+        android:visibility="invisible"
+        app:fabCustomSize="@dimen/fab_size"
+        app:maxImageSize="@dimen/fab_text_size_three" />
+
+
+</RelativeLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Mapus</string>
+    <string name="APP_KEY">8608b46f57f18825d7a04e6a643145e6</string>
+
+    <string name="first_info">인천대학교의 구조를 모르는 외부인과 새내기를 위한 위치정보!\n그리고 학교기관의 전화번호를 찾을 수 있는 전화번호부 기능까지!\nMAP과 CAMPUS의 두가지 기능을 갖춘 MAPUS는 인천대학교를\n이용하는 사람들에게 필요한 정보를 제공하는 어플리케이션입니다.</string>
+    <string name="marker_info">파란색 필터버튼을 누른 후\n특정 카테고리 버튼을\n누르면 필요한 장소만\n지도에 표시 됩니다.</string>
+</resources>
