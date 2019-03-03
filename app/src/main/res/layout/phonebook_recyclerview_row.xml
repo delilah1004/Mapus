@@ -1,87 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/detail_organ"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_from_parents"
+            android:layout_marginRight="@dimen/between_icon_margin"
+            android:text="학과이름"
+            android:textColor="@color/light"
+            android:textSize="11sp" />
 
-            <TextView
-                android:id="@+id/detail_organ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_from_parents"
-                android:layout_marginRight="@dimen/between_icon_margin"
-                android:text="학과이름"
-                android:textColor="@color/light"
-                android:textSize="11sp" />
+        <ImageView
+            android:layout_width="2dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/light" />
 
-            <ImageView
-                android:layout_width="2dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/light" />
-
-            <TextView
-                android:id="@+id/position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/between_icon_margin"
-                android:text="직위"
-                android:textColor="@color/light"
-                android:textSize="11sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/position"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/name_person"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_from_parents"
-                android:layout_marginRight="@dimen/between_icon_margin"
-                android:text="이름"
-                android:textColor="@color/bold"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:layout_width="2dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/bold" />
-
-            <TextView
-                android:id="@+id/phone_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/between_icon_margin"
-                android:text="000-1234-5678"
-                android:textColor="@color/bold"
-                android:textSize="11sp" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/between_icon_margin"
+            android:text="직위"
+            android:textColor="@color/light"
+            android:textSize="11sp" />
 
     </LinearLayout>
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="bottom"
-        android:background="@color/light" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/name_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_from_parents"
+            android:layout_marginRight="@dimen/between_icon_margin"
+            android:text="홍길동"
+            android:textColor="@color/bold"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="2dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bold" />
+
+        <TextView
+            android:id="@+id/phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/between_icon_margin"
+            android:text="000-1234-5678"
+            android:textColor="@color/bold"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
