@@ -7,6 +7,6 @@ public class PhoneBookInfo {
         this.detailOrgan = detailOrgan;
         this.position = position;
         this.name = name;
-        this.name = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 }

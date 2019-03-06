@@ -1,10 +1,16 @@
 package delilah.inuappcenter.mapus;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
@@ -32,14 +39,22 @@ public class MainActivity extends AppCompatActivity {
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
     private FloatingActionButton btn_call, btn_mylocation, fab, fab1, fab2, fab3, fab4;
-    private EditText search;
+    private TextView search;
     private Button first_confirm;
     private MapView mapView;
+    private LocationManager locationManager;
+    private double currentLongitude = 0;
+    private double currentLatitude = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+//        Location userLocation = getMyLocation();
+//        currentLongitude = userLocation.getLongitude();
+//        currentLatitude = userLocation.getLatitude();
 
         CheckFirstExecute();
 
@@ -65,6 +80,17 @@ public class MainActivity extends AppCompatActivity {
         clickListenerSetting();
     }
 
+    private Location getMyLocation() {
+        Location currentLocation = null;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        }
+        else{
+            String locationProvider = LocationManager.GPS_PROVIDER;
+            currentLocation = locationManager.getLastKnownLocation(locationProvider);
+        }
+        return  currentLocation;
+    }
+
     private void addMapView() {
         mapView = new MapView(this);
 
@@ -76,11 +102,13 @@ public class MainActivity extends AppCompatActivity {
 
         // 중심점 변경 + 줌 레벨 변경
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.375293, 126.632889), 1, true);
+//        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(currentLatitude, currentLongitude), 1, true);
 
         setMapViewClickListener();
     }
 
 
+    //마커 추가
     private void addMarker(){
         // MapPOIItem markerOne, makerTwo, markerThree, markerFour, markerFive, markerSix, markerSeven, markerEight, markerNine, markerTen, markerEleven, markerTwelve = new MapPOIItem();
 
@@ -358,6 +386,7 @@ public class MainActivity extends AppCompatActivity {
         markerThirty.setCustomImageAutoscale(false);
         mapView.addPOIItem(markerThirty);
     }
+
 
     //앱최초실행확인 (true - 최초실행)
     public boolean CheckFirstExecute() {
