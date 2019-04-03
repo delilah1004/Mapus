@@ -2,7 +2,6 @@ package delilah.inuappcenter.mapus;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,22 +12,27 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
 
+import java.net.NetworkInterface;
 import java.util.ArrayList;
 
+import delilah.inuappcenter.mapus.model.BuildingModel;
+import delilah.inuappcenter.mapus.model.EmployeeModel;
 import delilah.inuappcenter.mapus.network.NetworkController;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,14 +46,18 @@ public class MainActivity extends AppCompatActivity {
     private TextView search;
     private Button first_confirm;
     private MapView mapView;
+
+    private MapReverseGeoCoder mReverseGeoCoder = null;
+    private boolean isUsingCustomLocationMarker = false;
+
     private LocationManager locationManager;
-    private double currentLongitude = 0;
-    private double currentLatitude = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Information();
 
 //        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 //        Location userLocation = getMyLocation();
@@ -80,6 +88,36 @@ public class MainActivity extends AppCompatActivity {
         clickListenerSetting();
     }
 
+    private void Information(){
+        final ArrayList<EmployeeModel> employeeList = new ArrayList<>();
+        final Call<ArrayList<EmployeeModel>> employee = NetworkController.getInstance().getNetworkInterface().getEmployee();
+        employee.enqueue(new Callback<ArrayList<EmployeeModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<EmployeeModel>> call, Response<ArrayList<EmployeeModel>> response) {
+                employeeList.addAll(response.body().toArray());
+                Log.d("정보1", employeeList.get(0).title);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<EmployeeModel>> call, Throwable t) {
+
+            }
+        });
+
+        Call<ArrayList<JsonObject>> building = NetworkController.getInstance().getNetworkInterface().getBuildingInfo();
+        building.enqueue(new Callback<ArrayList<JsonObject>>() {
+            @Override
+            public void onResponse(Call<ArrayList<JsonObject>> call, Response<ArrayList<JsonObject>> response) {
+                Log.d("정보2", response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<JsonObject>> call, Throwable t) {
+
+            }
+        });
+    }
+
     private Location getMyLocation() {
         Location currentLocation = null;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -106,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
         setMapViewClickListener();
     }
-
 
     //마커 추가
     private void addMarker(){
@@ -387,7 +424,6 @@ public class MainActivity extends AppCompatActivity {
         mapView.addPOIItem(markerThirty);
     }
 
-
     //앱최초실행확인 (true - 최초실행)
     public boolean CheckFirstExecute() {
         SharedPreferences execute = getSharedPreferences("IsFirst", Activity.MODE_PRIVATE);
@@ -511,7 +547,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setCurrentLocation() {
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        if (isUsingCustomLocationMarker) {
+            mapView.setCurrentLocationRadius(0);
+            mapView.setDefaultCurrentLocationMarker();
+        }
+        else {
+            mapView.setCurrentLocationRadius(100);
+            mapView.setCurrentLocationRadiusFillColor(R.color.light);
+
+            MapPOIItem.ImageOffset trackingImageAnchorPointOffset = new MapPOIItem.ImageOffset(16, 16); // 좌하단(0,0) 기준 앵커포인트 오프셋
+            MapPOIItem.ImageOffset offImageAnchorPointOffset = new MapPOIItem.ImageOffset(15, 15);
+
+            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+
+            mapView.getCurrentLocationTrackingMode();
+            mapView.setShowCurrentLocationMarker(true);
+            mapView.isShowingCurrentLocationMarker();
+
+            mapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.ic_mylocation, trackingImageAnchorPointOffset);
+            mapView.setCustomCurrentLocationMarkerImage(R.drawable.ic_mylocation, offImageAnchorPointOffset);
+        }
     }
 
     private void setMapViewClickListener() {
@@ -585,17 +640,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void callInformation() {
-        Call<ArrayList<JsonObject>> call = NetworkController.getInstance().getNetworkInterface().getDelailah("이다은", 24);
-        call.enqueue(new Callback<ArrayList<JsonObject>>() {
-            @Override
-            public void onResponse(Call<ArrayList<JsonObject>> call, Response<ArrayList<JsonObject>> response) {
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<JsonObject>> call, Throwable t) {
-
-            }
-        });
-    }
 }
