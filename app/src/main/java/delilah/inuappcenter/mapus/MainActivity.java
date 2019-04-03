@@ -89,13 +89,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Information(){
-        final ArrayList<EmployeeModel> employeeList = new ArrayList<>();
         final Call<ArrayList<EmployeeModel>> employee = NetworkController.getInstance().getNetworkInterface().getEmployee();
         employee.enqueue(new Callback<ArrayList<EmployeeModel>>() {
             @Override
             public void onResponse(Call<ArrayList<EmployeeModel>> call, Response<ArrayList<EmployeeModel>> response) {
-                employeeList.addAll(response.body().toArray());
-                Log.d("정보1", employeeList.get(0).title);
+                ArrayList<EmployeeModel> employee = response.body();
+                for (int i = 0; i < employee.size(); i++){
+                    Log.d("어른디", String.valueOf(employee.get(i).id));
+                    Log.d("어른디.타이틀", employee.get(i).detailOrgan);
+                    Log.d("어른디.타이틀", employee.get(i).position);
+                    Log.d("어른디.타이틀", employee.get(i).name);
+                    Log.d("어른디.타이틀", employee.get(i).telephone);
+                }
             }
 
             @Override

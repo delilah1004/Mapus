@@ -6,12 +6,18 @@ public class EmployeeModel {
     @SerializedName("id")
     public int id;
 
-    @SerializedName("title")
-    public String title;
+    @SerializedName("detailOrgan")
+    public String detailOrgan;
 
-    @SerializedName("lat")
-    public double lat;
+    @SerializedName("position")
+    public String position;
 
-    @SerializedName("log")
-    public double log;
+    @SerializedName("name")
+    public String name;
+
+    @SerializedName("telephone")
+    public String telephone;
+
+    @SerializedName("officeId")
+    public String officeId;
 }
