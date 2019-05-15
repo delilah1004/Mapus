@@ -32,5 +32,9 @@
         <activity android:name=".FirstActivity"/>
         <activity android:name=".SearchActivity"/>
         <activity android:name=".PhoneBookActivity"/>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="8608b46f57f18825d7a04e6a643145e6"/>
     </application>
 </manifest>

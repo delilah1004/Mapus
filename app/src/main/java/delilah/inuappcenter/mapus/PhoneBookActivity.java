@@ -5,8 +5,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
+
+import delilah.inuappcenter.mapus.model.EmployeeModel;
+import delilah.inuappcenter.mapus.network.NetworkController;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PhoneBookActivity extends AppCompatActivity {
 
@@ -25,9 +32,7 @@ public class PhoneBookActivity extends AppCompatActivity {
 
         ArrayList<PhoneBookInfo> phoneBookInfoArrayList = new ArrayList<>();
 
-        phoneBookInfoArrayList.add(new PhoneBookInfo("학과이름","직위","이름","000-0000-0000"));
-        phoneBookInfoArrayList.add(new PhoneBookInfo("학과이름","직위","홍길동","032-835-8115"));
-        phoneBookInfoArrayList.add(new PhoneBookInfo("국어국문학과","인문학연구소장","송원용","032-835-8115"));
+        phoneBookInfoArrayList.add(new PhoneBookInfo("학과이름", "직위" ,"이름","000-0000-0000"));
 
         PhoneBookAdapter phoneBookAdapter = new PhoneBookAdapter(phoneBookInfoArrayList);
 

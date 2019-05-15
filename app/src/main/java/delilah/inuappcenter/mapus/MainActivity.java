@@ -2,14 +2,18 @@ package delilah.inuappcenter.mapus;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -30,15 +35,20 @@ import net.daum.mf.map.api.MapView;
 
 import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Map;
 
 import delilah.inuappcenter.mapus.model.BuildingModel;
 import delilah.inuappcenter.mapus.model.EmployeeModel;
+import delilah.inuappcenter.mapus.model.FilterModel;
+import delilah.inuappcenter.mapus.model.OfficeModel;
 import delilah.inuappcenter.mapus.network.NetworkController;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapReverseGeoCoder.ReverseGeoCodingResultListener {
+
+    private static final String LOG_TAG = "MainActivity";
 
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
@@ -47,22 +57,12 @@ public class MainActivity extends AppCompatActivity {
     private Button first_confirm;
     private MapView mapView;
 
-    private MapReverseGeoCoder mReverseGeoCoder = null;
-    private boolean isUsingCustomLocationMarker = false;
-
-    private LocationManager locationManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Information();
-
-//        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-//        Location userLocation = getMyLocation();
-//        currentLongitude = userLocation.getLongitude();
-//        currentLatitude = userLocation.getLatitude();
 
         CheckFirstExecute();
 
@@ -88,18 +88,18 @@ public class MainActivity extends AppCompatActivity {
         clickListenerSetting();
     }
 
-    private void Information(){
-        final Call<ArrayList<EmployeeModel>> employee = NetworkController.getInstance().getNetworkInterface().getEmployee();
+    public void Information() {
+        Call<ArrayList<EmployeeModel>> employee = NetworkController.getInstance().getNetworkInterface().getEmployeeInfo();
         employee.enqueue(new Callback<ArrayList<EmployeeModel>>() {
             @Override
             public void onResponse(Call<ArrayList<EmployeeModel>> call, Response<ArrayList<EmployeeModel>> response) {
                 ArrayList<EmployeeModel> employee = response.body();
-                for (int i = 0; i < employee.size(); i++){
-                    Log.d("어른디", String.valueOf(employee.get(i).id));
-                    Log.d("어른디.타이틀", employee.get(i).detailOrgan);
-                    Log.d("어른디.타이틀", employee.get(i).position);
-                    Log.d("어른디.타이틀", employee.get(i).name);
-                    Log.d("어른디.타이틀", employee.get(i).telephone);
+                for (int i = 0; i < employee.size(); i++) {
+                    Log.d("직원.아이디", String.valueOf(employee.get(i).id));
+                    Log.d("직원.소속-단과대학이름", employee.get(i).detailOrgan);
+                    Log.d("직원.직위", employee.get(i).position);
+                    Log.d("직원.이름", employee.get(i).name);
+                    Log.d("직원.전화번호", employee.get(i).telephone);
                 }
             }
 
@@ -109,29 +109,63 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Call<ArrayList<JsonObject>> building = NetworkController.getInstance().getNetworkInterface().getBuildingInfo();
-        building.enqueue(new Callback<ArrayList<JsonObject>>() {
+        Call<ArrayList<BuildingModel>> building = NetworkController.getInstance().getNetworkInterface().getBuildingInfo();
+        building.enqueue(new Callback<ArrayList<BuildingModel>>() {
             @Override
-            public void onResponse(Call<ArrayList<JsonObject>> call, Response<ArrayList<JsonObject>> response) {
-                Log.d("정보2", response.body().toString());
+            public void onResponse(Call<ArrayList<BuildingModel>> call, Response<ArrayList<BuildingModel>> response) {
+                ArrayList<BuildingModel> building = response.body();
+                for (int i = 0; i < building.size(); i++) {
+                    Log.d("건물.아이디", String.valueOf(building.get(i).id));
+                    Log.d("건물.단과대학이름", building.get(i).title);
+                    Log.d("건물.경도", String.valueOf(building.get(i).lat));
+                    Log.d("건물.위도", String.valueOf(building.get(i).log));
+                }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<JsonObject>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<BuildingModel>> call, Throwable t) {
 
             }
         });
-    }
 
-    private Location getMyLocation() {
-        Location currentLocation = null;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-        }
-        else{
-            String locationProvider = LocationManager.GPS_PROVIDER;
-            currentLocation = locationManager.getLastKnownLocation(locationProvider);
-        }
-        return  currentLocation;
+        Call<ArrayList<FilterModel>> filter = NetworkController.getInstance().getNetworkInterface().getFilterInfo();
+        filter.enqueue(new Callback<ArrayList<FilterModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<FilterModel>> call, Response<ArrayList<FilterModel>> response) {
+                ArrayList<FilterModel> filter = response.body();
+                for (int i = 0; i < filter.size(); i++) {
+                    Log.d("필터.아이디", String.valueOf(filter.get(i).id));
+                    Log.d("필터.소속-단과대학이름", filter.get(i).title);
+                    Log.d("필터.이름", filter.get(i).marker);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<FilterModel>> call, Throwable t) {
+
+            }
+        });
+
+        Call<ArrayList<OfficeModel>> office = NetworkController.getInstance().getNetworkInterface().getOfficeInfo();
+        office.enqueue(new Callback<ArrayList<OfficeModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<OfficeModel>> call, Response<ArrayList<OfficeModel>> response) {
+                ArrayList<OfficeModel> office = response.body();
+                for (int i = 0; i < office.size(); i++) {
+                    Log.d("사무실.아이디", String.valueOf(office.get(i).id));
+                    Log.d("사무실.이름", office.get(i).title);
+                    Log.d("사무실.호수", office.get(i).roomId);
+                    Log.d("사무실.소속대학번호", office.get(i).buildingId);
+                    Log.d("사무실.숫자0", office.get(i).filterId);
+                    Log.d("사무실.검색여부", office.get(i).isMain);
+            }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<OfficeModel>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void addMapView() {
@@ -145,13 +179,12 @@ public class MainActivity extends AppCompatActivity {
 
         // 중심점 변경 + 줌 레벨 변경
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.375293, 126.632889), 1, true);
-//        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(currentLatitude, currentLongitude), 1, true);
 
         setMapViewClickListener();
     }
 
     //마커 추가
-    private void addMarker(){
+    private void addMarker() {
         // MapPOIItem markerOne, makerTwo, markerThree, markerFour, markerFive, markerSix, markerSeven, markerEight, markerNine, markerTen, markerEleven, markerTwelve = new MapPOIItem();
 
         MapPOIItem markerOne = new MapPOIItem();
@@ -456,7 +489,12 @@ public class MainActivity extends AppCompatActivity {
         btn_mylocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setCurrentLocation();
+
+                mapView.setCurrentLocationEventListener(MainActivity.this);
+                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+
+                mapView.setShowCurrentLocationMarker(true);
+
             }
         });
 
@@ -551,29 +589,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setCurrentLocation() {
-        if (isUsingCustomLocationMarker) {
-            mapView.setCurrentLocationRadius(0);
-            mapView.setDefaultCurrentLocationMarker();
-        }
-        else {
-            mapView.setCurrentLocationRadius(100);
-            mapView.setCurrentLocationRadiusFillColor(R.color.light);
-
-            MapPOIItem.ImageOffset trackingImageAnchorPointOffset = new MapPOIItem.ImageOffset(16, 16); // 좌하단(0,0) 기준 앵커포인트 오프셋
-            MapPOIItem.ImageOffset offImageAnchorPointOffset = new MapPOIItem.ImageOffset(15, 15);
-
-            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-
-            mapView.getCurrentLocationTrackingMode();
-            mapView.setShowCurrentLocationMarker(true);
-            mapView.isShowingCurrentLocationMarker();
-
-            mapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.ic_mylocation, trackingImageAnchorPointOffset);
-            mapView.setCustomCurrentLocationMarkerImage(R.drawable.ic_mylocation, offImageAnchorPointOffset);
-        }
-    }
-
     private void setMapViewClickListener() {
         mapView.setMapViewEventListener(new MapView.MapViewEventListener() {
             @Override
@@ -645,4 +660,87 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // CurrentLocationEventListener 이용시 Override 되는 항목
+    @Override
+    public void onCurrentLocationUpdate(MapView mapView, MapPoint currentLocation, float accuracyInMeters) {
+        MapPoint.GeoCoordinate mapPointGeo = currentLocation.getMapPointGeoCoord();
+        Log.i(LOG_TAG, String.format("MapView onCurrentLocationUpdate (%f,%f) accuracy (%f)", mapPointGeo.latitude, mapPointGeo.longitude, accuracyInMeters));
+    }
+
+    @Override
+    public void onCurrentLocationDeviceHeadingUpdate(MapView mapView, float v) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdateFailed(MapView mapView) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdateCancelled(MapView mapView) {
+
+    }
+
+    // MapViewEventListener 이용시 Override 되는 항목 - 사용하지는 않음
+    @Override
+    public void onMapViewInitialized(MapView mapView) {
+
+    }
+
+    @Override
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+
+    }
+
+    @Override
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    // ReverseGeoCodingResultListener 이용시 Override 되는 항목
+    @Override
+    public void onReverseGeoCoderFoundAddress(MapReverseGeoCoder mapReverseGeoCoder, String s) {
+        mapReverseGeoCoder.toString();
+        onFinishReverseGeoCoding(s);
+    }
+
+    @Override
+    public void onReverseGeoCoderFailedToFindAddress(MapReverseGeoCoder mapReverseGeoCoder) {
+        onFinishReverseGeoCoding("Fail");
+    }
+
+    private void onFinishReverseGeoCoding(String result) {
+        Toast.makeText(MainActivity.this, "Reverse Geo-coding : " + result, Toast.LENGTH_SHORT).show();
+    }
 }
