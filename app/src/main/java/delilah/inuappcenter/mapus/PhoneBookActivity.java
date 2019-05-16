@@ -30,13 +30,36 @@ public class PhoneBookActivity extends AppCompatActivity {
         phoneBookLayoutManager = new LinearLayoutManager(this);
         phoneBookRecyclerView.setLayoutManager(phoneBookLayoutManager);
 
-        ArrayList<PhoneBookInfo> phoneBookInfoArrayList = new ArrayList<>();
+        Information();
+    }
 
-        phoneBookInfoArrayList.add(new PhoneBookInfo("학과이름", "직위" ,"이름","000-0000-0000"));
+    public void Information() {
+        Call<ArrayList<EmployeeModel>> employee = NetworkController.getInstance().getNetworkInterface().getEmployeeInfo();
+        employee.enqueue(new Callback<ArrayList<EmployeeModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<EmployeeModel>> call, Response<ArrayList<EmployeeModel>> response) {
+                ArrayList<EmployeeModel> employee = response.body();
+                ArrayList<PhoneBookInfo> phoneBookInfoArrayList = new ArrayList<>();
 
-        PhoneBookAdapter phoneBookAdapter = new PhoneBookAdapter(phoneBookInfoArrayList);
+                for (int i = 0; i < employee.size(); i++) {
 
-        phoneBookRecyclerView.setAdapter(phoneBookAdapter);
+                    Log.d("직원.아이디", String.valueOf(employee.get(i).id));
+                    Log.d("직원.소속-단과대학이름", employee.get(i).detailOrgan);
+                    Log.d("직원.직위", employee.get(i).position);
+                    Log.d("직원.이름", employee.get(i).name);
+                    Log.d("직원.전화번호", employee.get(i).telephone);
 
+                    phoneBookInfoArrayList.add(new PhoneBookInfo(employee.get(i).detailOrgan, employee.get(i).position ,employee.get(i).name,employee.get(i).telephone));
+                }
+                PhoneBookAdapter phoneBookAdapter = new PhoneBookAdapter(phoneBookInfoArrayList);
+
+                phoneBookRecyclerView.setAdapter(phoneBookAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<EmployeeModel>> call, Throwable t) {
+
+            }
+        });
     }
 }

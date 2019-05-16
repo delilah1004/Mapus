@@ -157,8 +157,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
                     Log.d("사무실.호수", office.get(i).roomId);
                     Log.d("사무실.소속대학번호", office.get(i).buildingId);
                     Log.d("사무실.숫자0", office.get(i).filterId);
-                    Log.d("사무실.검색여부", office.get(i).isMain);
-            }
+                }
             }
 
             @Override

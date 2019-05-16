@@ -5,7 +5,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
 import java.util.ArrayList;
+
+import delilah.inuappcenter.mapus.model.BuildingModel;
+import delilah.inuappcenter.mapus.model.OfficeModel;
+import delilah.inuappcenter.mapus.network.NetworkController;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -22,15 +31,19 @@ public class SearchActivity extends AppCompatActivity {
         searchLayoutManager = new LinearLayoutManager(this);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
-        ArrayList<SearchListInfo> searchListInfoArrayList = new ArrayList<>();
+        ArrayList<SearchListInfo> searchInfoArrayList = new ArrayList<>();
 
-        searchListInfoArrayList.add(new SearchListInfo("감사","본관"));
-        searchListInfoArrayList.add(new SearchListInfo("미래전략팀","대학본부"));
-        searchListInfoArrayList.add(new SearchListInfo("부서명","위치"));
+        searchInfoArrayList.add(new SearchListInfo("사무실이름","건물이름"));
 
-        SearchAdapter searchAdapter = new SearchAdapter(searchListInfoArrayList);
+        SearchAdapter searchAdapter = new SearchAdapter(searchInfoArrayList);
 
         searchRecyclerView.setAdapter(searchAdapter);
 
+        Information();
     }
+
+    public void Information() {
+
+    }
+
 }
