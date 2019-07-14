@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private Button first_confirm;
     private MapView mapView;
 
+    private char filterId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -497,6 +499,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        // 필터 버튼
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -504,6 +507,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        // 편의점 버튼
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -511,6 +515,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        // 식당 버튼
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -518,6 +523,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        // 카페 버튼
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -525,6 +531,7 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        // 휴게실 버튼
         fab4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

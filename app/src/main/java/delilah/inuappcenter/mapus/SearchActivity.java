@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import delilah.inuappcenter.mapus.model.BuildingModel;
+import delilah.inuappcenter.mapus.model.EmployeeModel;
 import delilah.inuappcenter.mapus.model.OfficeModel;
 import delilah.inuappcenter.mapus.network.NetworkController;
 import retrofit2.Call;
@@ -43,7 +44,33 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void Information() {
+        Call<ArrayList<OfficeModel>> office = NetworkController.getInstance().getNetworkInterface().getOfficeInfo();
+        office.enqueue(new Callback<ArrayList<OfficeModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<OfficeModel>> call, Response<ArrayList<OfficeModel>> response) {
+                ArrayList<OfficeModel> office = response.body();
+                ArrayList<SearchListInfo> searchListInfoArrayList = new ArrayList<>();
 
+                for (int i = 0; i < office.size(); i++) {
+
+                    Log.d("사무실.아이디", String.valueOf(office.get(i).id));
+                    Log.d("사무실.사무실명", office.get(i).title);
+                    Log.d("사무실.사무실호수", office.get(i).roomId);
+                    Log.d("사무실.빌딩호관", office.get(i).buildingId);
+
+                    searchListInfoArrayList.add(new SearchListInfo(office.get(i).title, office.get(i).buildingId));
+                }
+
+                SearchAdapter searchAdapter = new SearchAdapter(searchListInfoArrayList);
+
+                searchRecyclerView.setAdapter(searchAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<OfficeModel>> call, Throwable t) {
+
+            }
+        });
     }
 
 }
