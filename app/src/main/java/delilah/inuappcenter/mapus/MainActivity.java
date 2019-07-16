@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.v4.app.ActivityCompat;
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
     private TextView search;
     private Button first_confirm;
     private MapView mapView;
+
+    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION};
 
     private char filterId;
 
@@ -566,6 +571,8 @@ public class MainActivity extends AppCompatActivity implements MapView.CurrentLo
         btn_mylocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
             }
         });
     }
