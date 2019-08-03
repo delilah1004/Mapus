@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class PhoneBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EmployeeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static class PhoneBookViewHolder extends RecyclerView.ViewHolder {
+    public static class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
         TextView detailOrgan, position, name, phoneNumber;
 
-        public PhoneBookViewHolder(@NonNull View itemView) {
+        public EmployeeViewHolder(@NonNull View itemView) {
             super(itemView);
             detailOrgan = itemView.findViewById(R.id.detail_organ);
             position = itemView.findViewById(R.id.position);
@@ -24,10 +24,10 @@ public class PhoneBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private ArrayList<PhoneBookInfo> phoneBookInfoArrayList;
+    private ArrayList<PhoneBookInfo> employeeListInfoArrayList;
 
-    PhoneBookAdapter(ArrayList<PhoneBookInfo> phoneBookInfoArrayList) {
-        this.phoneBookInfoArrayList = phoneBookInfoArrayList;
+    EmployeeAdapter(ArrayList<PhoneBookInfo> employeeListInfoArrayList) {
+        this.employeeListInfoArrayList = employeeListInfoArrayList;
     }
 
     @Override
@@ -35,22 +35,23 @@ public class PhoneBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.phonebook_recyclerview_row, viewGroup, false);
 
-        return new PhoneBookViewHolder(v);
+        return new EmployeeViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
-        PhoneBookViewHolder phoneBookViewHolder = (PhoneBookViewHolder) viewHolder;
+        EmployeeViewHolder employeeViewHolder = (EmployeeViewHolder) viewHolder;
 
-        phoneBookViewHolder.detailOrgan.setText(phoneBookInfoArrayList.get(position).detailOrgan);
-        phoneBookViewHolder.position.setText(phoneBookInfoArrayList.get(position).position);
-        phoneBookViewHolder.name.setText(phoneBookInfoArrayList.get(position).name);
-        phoneBookViewHolder.phoneNumber.setText(phoneBookInfoArrayList.get(position).phoneNumber);
+        employeeViewHolder.detailOrgan.setText(employeeListInfoArrayList.get(position).detailOrgan);
+        employeeViewHolder.position.setText(employeeListInfoArrayList.get(position).position);
+        employeeViewHolder.name.setText(employeeListInfoArrayList.get(position).name);
+        employeeViewHolder.phoneNumber.setText(employeeListInfoArrayList.get(position).phoneNumber);
     }
 
     @Override
     public int getItemCount() {
-        return phoneBookInfoArrayList.size();
+        return employeeListInfoArrayList.size();
     }
+
 }

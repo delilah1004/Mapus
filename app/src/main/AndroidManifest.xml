@@ -30,7 +30,9 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity android:name=".FirstActivity"/>
-        <activity android:name=".SearchActivity"/>
+        <activity android:name=".BuildingActivity"/>
+        <activity android:name=".OfficeActivity"/>
+        <activity android:name=".EmployeeActivity"/>
         <activity android:name=".PhoneBookActivity"/>
 
         <meta-data
