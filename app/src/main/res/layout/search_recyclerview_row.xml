@@ -9,23 +9,31 @@
         android:padding="@dimen/margin_from_parents">
 
         <TextView
-            android:id="@+id/office_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/between_icon_margin"
-            android:layout_marginRight="@dimen/between_icon_margin"
-            android:text="부서명"
-            android:textColor="@color/bold"
-            android:textSize="17sp" />
-
-        <TextView
             android:id="@+id/building_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/between_icon_margin"
-            android:text="위치"
+            android:layout_marginRight="@dimen/between_icon_margin"
+            android:text="건물명"
+            android:textColor="@color/bold"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/building_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/between_icon_margin"
+            android:text="0"
+            android:textColor="@color/light"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="호관"
             android:textColor="@color/light"
             android:textSize="11sp" />
 

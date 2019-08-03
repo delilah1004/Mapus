@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:hint="소속 또는 이름을 입력하세요" />
+            android:hint="@string/search_main" />
 
     </LinearLayout>
 

@@ -12,7 +12,9 @@
         android:background="@null"
         android:padding="15dp"
         android:gravity="center"
-        android:hint="이름 또는 전화번호를 입력하세요" />
+        android:maxLines="1"
+        android:singleLine="true"
+        android:hint="@string/search_phone" />
 
     <ImageView
         android:layout_width="match_parent"

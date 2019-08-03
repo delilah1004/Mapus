@@ -17,8 +17,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public SearchViewHolder(@NonNull View itemView) {
             super(itemView);
-            officeTitle = itemView.findViewById(R.id.office_title);
-            buildingTitle = itemView.findViewById(R.id.building_title);
+            officeTitle = itemView.findViewById(R.id.building_title);
+            buildingTitle = itemView.findViewById(R.id.building_number);
         }
     }
 
@@ -37,16 +37,17 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
         SearchViewHolder searchViewHolder = (SearchViewHolder) viewHolder;
 
-        searchViewHolder.officeTitle.setText(searchListInfoArrayList.get(i).officeTitle);
-        searchViewHolder.buildingTitle.setText(searchListInfoArrayList.get(i).buildingTitle);
+        searchViewHolder.officeTitle.setText(searchListInfoArrayList.get(position).buildingTitle);
+        searchViewHolder.buildingTitle.setText(searchListInfoArrayList.get(position).id);
     }
 
     @Override
     public int getItemCount() {
         return searchListInfoArrayList.size();
     }
+
 }

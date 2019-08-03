@@ -10,7 +10,9 @@
         android:background="@null"
         android:padding="15dp"
         android:gravity="center"
-        android:hint="건물명 또는 부서명을 입력하세요" />
+        android:maxLines="1"
+        android:singleLine="true"
+        android:hint="@string/search_main" />
 
     <ImageView
         android:layout_width="match_parent"

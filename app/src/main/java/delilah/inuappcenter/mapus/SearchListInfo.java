@@ -1,11 +1,11 @@
 package delilah.inuappcenter.mapus;
 
 public class SearchListInfo {
-    public String officeTitle, buildingTitle;
+    public String buildingTitle, id;
     public int officeFloor;
 
-    public SearchListInfo(String officeTitle, String buildingTitle){
-        this.officeTitle = officeTitle;
+    public SearchListInfo(String buildingTitle, String number){
         this.buildingTitle = buildingTitle;
+        this.id = number;
     }
 }

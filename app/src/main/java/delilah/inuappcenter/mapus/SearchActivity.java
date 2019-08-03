@@ -34,31 +34,31 @@ public class SearchActivity extends AppCompatActivity {
 
         ArrayList<SearchListInfo> searchInfoArrayList = new ArrayList<>();
 
-        searchInfoArrayList.add(new SearchListInfo("사무실이름","건물이름"));
+        searchInfoArrayList.add(new SearchListInfo("건물이름","건물번호"));
 
         SearchAdapter searchAdapter = new SearchAdapter(searchInfoArrayList);
 
         searchRecyclerView.setAdapter(searchAdapter);
 
-        Information();
+        BuildingInformation();
+
+        clickListenerSetting();
     }
 
-    public void Information() {
-        Call<ArrayList<OfficeModel>> office = NetworkController.getInstance().getNetworkInterface().getOfficeInfo();
-        office.enqueue(new Callback<ArrayList<OfficeModel>>() {
+    public void BuildingInformation() {
+        Call<ArrayList<BuildingModel>> office = NetworkController.getInstance().getNetworkInterface().getBuildingInfo();
+        office.enqueue(new Callback<ArrayList<BuildingModel>>() {
             @Override
-            public void onResponse(Call<ArrayList<OfficeModel>> call, Response<ArrayList<OfficeModel>> response) {
-                ArrayList<OfficeModel> office = response.body();
+            public void onResponse(Call<ArrayList<BuildingModel>> call, Response<ArrayList<BuildingModel>> response) {
+                ArrayList<BuildingModel> building = response.body();
                 ArrayList<SearchListInfo> searchListInfoArrayList = new ArrayList<>();
 
-                for (int i = 0; i < office.size(); i++) {
+                for (int i = 0; i < building.size(); i++) {
 
-                    Log.d("사무실.아이디", String.valueOf(office.get(i).id));
-                    Log.d("사무실.사무실명", office.get(i).title);
-                    Log.d("사무실.사무실호수", office.get(i).roomId);
-                    Log.d("사무실.빌딩호관", office.get(i).buildingId);
+                    Log.d("건물.건물명", building.get(i).title);
+                    Log.d("건물.번호", String.valueOf(building.get(i).id));
 
-                    searchListInfoArrayList.add(new SearchListInfo(office.get(i).title, office.get(i).buildingId));
+                    searchListInfoArrayList.add(new SearchListInfo(building.get(i).title, String.valueOf(building.get(i).id)));
                 }
 
                 SearchAdapter searchAdapter = new SearchAdapter(searchListInfoArrayList);
@@ -67,10 +67,22 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<OfficeModel>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<BuildingModel>> call, Throwable t) {
 
             }
         });
+    }
+
+    private void clickListenerSetting() {
+        /*
+        btn_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PhoneBookActivity.class);
+                startActivity(intent);
+            }
+        });
+        */
     }
 
 }
